@@ -1,0 +1,31 @@
+{
+  "name": "tinychannel",
+  "version": "1.0.0",
+  "description": "format email threads for openai chat api",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/honeykjoule/tinychannel.git"
+  },
+  "keywords": [
+    "email",
+    "chat"
+  ],
+  "author": "honeykjoule",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/honeykjoule/tinychannel/issues"
+  },
+  "homepage": "https://github.com/honeykjoule/tinychannel#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "googleapis": "^126.0.0",
+    "openai": "^4.2.0"
+  }
+}

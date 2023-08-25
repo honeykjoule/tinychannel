@@ -1,0 +1,17 @@
+node_modules/
+
+.env
+
+dist/
+build/
+
+.log
+.sqlite
+
+.DS_Store
+Thumbs.db
+
+.idea/
+.vscode/
+
+config/
