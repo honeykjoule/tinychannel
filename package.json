@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "test"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -27,5 +27,8 @@
     "dotenv": "^16.3.1",
     "googleapis": "^126.0.0",
     "openai": "^4.2.0"
+  },
+  "devDependencies": {
+    "jest": "^29.6.4"
   }
 }
