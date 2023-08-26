@@ -1,15 +1,12 @@
-const { google } = require('googleapis');
+const {JWT} = require('google-auth-library');
+const gmailAPI = require('@googleapis/gmail');
 const googlePrivateKey = require('../config/service-account.json');
 
 require('dotenv').config();
 const botEmailAddress = process.env.BOT_EMAIL_ADDRESS;
 const botEmailAlias = process.env.BOT_EMAIL_ALIAS;
 
-console.log(googlePrivateKey);
-console.log(botEmailAddress);
-console.log(botEmailAlias);
-
-const jwtClient = new google.auth.JWT(
+const jwtClient = new JWT(
   googlePrivateKey.client_email,
   null,
   googlePrivateKey.private_key,
@@ -17,7 +14,7 @@ const jwtClient = new google.auth.JWT(
   botEmailAddress
 );
 
-const gmail = google.gmail({version: 'v1', auth: jwtClient});
+const gmail = gmailAPI.gmail({version: 'v1', auth: jwtClient});
 
 function authorizeGmail(callback) {
   console.log('Authorizing Gmail access...');
@@ -73,7 +70,7 @@ function sendReply(emailDetails, callback) {
     const replyPromises = emailDetails.map((detail) => {
       const toEmail = detail.data.payload.headers.find((header) => header.name === 'From').value;
       const subject = detail.data.payload.headers.find((header) => header.name === 'Subject').value;
-      const messageId = detail.data.id;
+      const messageId = detail.data.payload.headers.find((header) => header.name === 'Message-ID').value;
       const threadId = detail.data.threadId;
 
       const emailBody = "This is a placeholder reply text."
@@ -83,7 +80,9 @@ function sendReply(emailDetails, callback) {
       const fullBodyReply = `${emailBody}\n\n${quotedBody}`;
       console.log(fullBodyReply);
 
-      const rawEmail = createRawEmail(toEmail, subject, fullBodyReply, messageId, threadId);
+      console.log('headers:', detail.data.payload.headers)
+
+      const rawEmail = createRawEmail(toEmail, subject, emailBody, messageId, threadId);
       return gmail.users.messages.send({
         userId: 'me',
         resource: { raw: rawEmail },
