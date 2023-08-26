@@ -65,7 +65,7 @@ function createRawEmail(toEmail, subject, emailBody, messageId, threadId) {
   return base64EncodedEmail;
 }
 
-function sendReply(emailDetails, callback) {
+async function sendReply(emailDetails, callback) {
   authorizeGmail((tokens) => {
     const replyPromises = emailDetails.map((detail) => {
       const toEmail = detail.data.payload.headers.find((header) => header.name === 'From').value;
@@ -73,14 +73,8 @@ function sendReply(emailDetails, callback) {
       const messageId = detail.data.payload.headers.find((header) => header.name === 'Message-ID').value;
       const threadId = detail.data.threadId;
 
-      const emailBody = "This is a placeholder reply text."
       const previousBody = Buffer.from(detail.data.payload.parts[0].body.data, 'base64').toString('utf8');
-      console.log(previousBody);
-      const quotedBody = previousBody.split('\n').map(line => `> ${line}`).join('\n');
-      const fullBodyReply = `${emailBody}\n\n${quotedBody}`;
-      console.log(fullBodyReply);
-
-      console.log('headers:', detail.data.payload.headers)
+      const emailBody = "This is a placeholder reply text."
 
       const rawEmail = createRawEmail(toEmail, subject, emailBody, messageId, threadId);
       return gmail.users.messages.send({
